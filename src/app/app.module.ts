@@ -10,7 +10,6 @@ import ru from '@angular/common/locales/ru';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './modules/login/login.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,8 +18,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { MainComponent } from './modules/main/main.component';
-import { MainModule } from './modules/main/main.module';
+import { MainComponent } from './main/main.component';
+import { MainModule } from './main/main.module';
+import { AuthorizationMenuComponent } from './common/authorization-menu/authorization-menu.component';
 
 // import { CategoryComponent } from './modules/common/category/category.component';
 
@@ -33,9 +33,7 @@ registerLocaleData(ru);
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-
-
+    AuthorizationMenuComponent,
   ],
   imports: [
     BrowserModule,

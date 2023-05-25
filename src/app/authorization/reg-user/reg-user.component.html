@@ -1,0 +1,113 @@
+<div class="form-wrapper">
+  <h3 nz-typography>Регистрация</h3>
+
+  <form
+    nz-form
+    [nzLayout]="'vertical'"
+    [formGroup]="regForm"
+    (ngSubmit)="registerUser()"
+  >
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Введите ваше имя!">
+        <nz-input-group>
+          <input
+            formControlName="name"
+            nz-input
+            type="text"
+            placeholder="Ведите имя"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Введите вашу электронную почту!">
+        <nz-input-group>
+          <input
+            formControlName="email"
+            nz-input
+            type="email"
+            autocomplete="new-email"
+            placeholder="Ведите email"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="passwordErrorTpl">
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            formControlName="password"
+            nz-input
+            type="password"
+            autocomplete="new-password"
+            placeholder="Ведите пароль"
+          />
+        </nz-input-group>
+        <ng-template #passwordErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('minlength')">
+            Минимальная длина 4 символа
+          </ng-container>
+          <ng-container *ngIf="control.hasError('maxlength')">
+            Максимальная длина 16 символов
+          </ng-container>
+        </ng-template>
+        <ng-template #suffixTemplate>
+          <i
+            nz-icon
+            [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible = !passwordVisible"
+          ></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <nz-input-group [nzSuffix]="suffixTemplate2">
+          <input
+            [type]="passwordVisible2 ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            nz-input
+            type="password"
+            (ngModelChange)="updateConfirmValidator()"
+            autocomplete="new-password"
+            placeholder="Подтвердите пароль"
+          />
+        </nz-input-group>
+        <ng-template #errorTpl let-control>
+          <ng-container>
+            {{ control.hasError("required") ? "Введите пароль" : "" }}
+            {{
+              control.hasError("confirm") && !control.hasError("required")
+                ? "Пароли не совпадают"
+                : ""
+            }}
+          </ng-container>
+        </ng-template>
+        <ng-template #suffixTemplate2>
+          <i
+            nz-icon
+            [nzType]="passwordVisible2 ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible2 = !passwordVisible2"
+          ></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [disabled]="!regForm.valid">
+          Зарегистрироваться
+        </button>
+        <button
+          style="margin-top: 10px"
+          routerLink="../auth"
+          nz-button
+          nzType="link"
+        >
+          Вход
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+

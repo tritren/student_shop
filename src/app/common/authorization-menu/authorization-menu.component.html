@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <ng-container *ngIf="inSystem; else cart">
+    <button nz-button nzType="link" routerLink="authorization/auth">
+      Вход
+    </button>
+    |
+    <button nz-button nzType="link" routerLink="authorization/reg">
+      Регистрация
+    </button>
+  </ng-container>
+
+  <ng-template #cart>
+    <button nz-button nzType="link" routerLink="cart">
+      Корзина <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
+    </button>
+  </ng-template>
+</div>

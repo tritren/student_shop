@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<div class="main-wrapper">
+  <nz-layout>
+    <nz-header>
+      <div class="title">
+        <a href="/">BestSP.BY</a>
+      </div>
+      <div class="control-menu">
+        <app-authorization-menu></app-authorization-menu>
+      </div>
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer> © 2023 Stanislavsky All rights reserved. </nz-footer>
+  </nz-layout>
+</div>

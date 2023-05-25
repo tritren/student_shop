@@ -1,0 +1,51 @@
+<div class="form-wrapper">
+  <h3 nz-typography>Вход</h3>
+
+  <form
+    nz-form
+    [nzLayout]="'vertical'"
+    [formGroup]="userLoginForm"
+    (ngSubmit)="userLogin()"
+  >
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Введите ваш email!">
+        <nz-input-group>
+          <input
+            formControlName="email"
+            nz-input
+            type="text"
+            placeholder="Ведите email"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Введите ваш пароль">
+        <nz-input-group>
+          <input
+            formControlName="password"
+            nz-input
+            type="password"
+            autocomplete="new-password"
+            placeholder="Ведите пароль"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [disabled]="!userLoginForm.valid">
+          Войти
+        </button>
+        <button
+          style="margin-top: 10px"
+          routerLink="../reg"
+          nz-button
+          nzType="link"
+        >
+          Регистрация
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
