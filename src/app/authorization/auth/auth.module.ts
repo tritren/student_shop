@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthComponent } from './auth.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from 'src/app/service/auth.service';
 
 
 @NgModule({
@@ -20,6 +22,6 @@ import { AuthComponent } from './auth.component';
     NzInputModule,
     NzButtonModule
   ],
-  providers: [CookieService]
+  providers: [CookieService ]
 })
 export class AuthModule { }

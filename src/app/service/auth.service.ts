@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-// import { JwtHelperService } from '@auth0/angular-jwt';
-// import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { CookieService } from 'ngx-cookie-service';
 // import { environment } from 'src/environments/environment';
 import { IRegUserModel } from '../models/reg-user.medel';
 // import { IReqModel } from '../models/req-model';
@@ -24,12 +24,33 @@ export class AuthService {
   // public user = new BehaviorSubject<any>({});
   // public user$ = this.user.asObservable();
 
-  // constructor(
-  //   private http: HttpClient,
-  //   // private cookieService: CookieService,
-  //   // private jwtHelperService: JwtHelperService,
-  // ) { }
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private jwtHelperService: JwtHelperService,
+  ) {
+  }
 
+  setCookie(val: any) {
+    const token = JSON.stringify(val);
+
+    this.cookieService.set('access_token', 'token');
+  }
+
+  logIn(val: any): Observable<boolean> {
+    this.setCookie(val)
+    // if (!this.checkCookie()) {
+    //   console.log(val);
+
+    //   this.setCookie(val)
+    // }
+    // const resp = this.checkCookie()
+    return of(true)
+  }
+
+  checkCookie(): boolean {
+    return this.cookieService.check('access_token')
+  }
 
   // /**
   //  * Регистрация пользователя

@@ -12,7 +12,8 @@ import { AuthService } from '../../service/auth.service';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.less']
+  styleUrls: ['./auth.component.less'],
+  providers: [CookieService]
 })
 export class AuthComponent extends BaseDestroyableComponent implements OnInit {
 
@@ -27,13 +28,16 @@ export class AuthComponent extends BaseDestroyableComponent implements OnInit {
 
     private router: Router,
   ) {
+
     super();
+
+
   }
 
 
   ngOnInit(): void {
     this.initForm()
-    this.loginVerification();
+    // this.loginVerification();
   }
 
 
@@ -46,7 +50,8 @@ export class AuthComponent extends BaseDestroyableComponent implements OnInit {
 
 
   loginVerification() {
-    this.cookie = this.cookieService.get('access_token');
+    // this.cookie = this.cookieService.get('access_token');
+
     if (this.cookie) {
       // this.encodingJwt = this.jwtHelperService.decodeToken(this.cookie) as IAuthModel;
       // if (this.encodingJwt.roles.some(v => v.value === "ADMIN")) {
@@ -62,6 +67,15 @@ export class AuthComponent extends BaseDestroyableComponent implements OnInit {
 
   public userLogin(): void {
     if (this.userLoginForm.valid) {
+
+      this.authService.logIn(this.userLoginForm.value)
+        .pipe(takeUntil(this.subscriptions))
+        .subscribe(v => {
+          console.log(v);
+
+        })
+
+
       // this.authService.login(this.userLoginForm.value)
       //   .pipe(takeUntil(this.subscriptions)).subscribe((data) => {
       //     if (data.success) {

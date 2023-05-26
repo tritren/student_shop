@@ -7,6 +7,7 @@ import { AuthService } from '../service/auth.service';
 import { AuthGuard } from '../guard/auth.guard';
 
 
+
 @NgModule({
   declarations: [
     AuthorizationComponent

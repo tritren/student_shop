@@ -33,7 +33,9 @@ export class RegComponent extends BaseDestroyableComponent {
 
   initForm() {
     this.regForm = this.fb.group({
-      name: [null, [Validators.required]],
+      fio: [null, [Validators.required]],
+      login: [null, [Validators.required]],
+      phone: [null, [Validators.required,]],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]]
@@ -59,8 +61,11 @@ export class RegComponent extends BaseDestroyableComponent {
    */
   registerUser(): void {
     if (this.regForm.valid) {
+      console.log(this.regForm.value);
+
       const user = new RegUserModel(this.regForm.value);
       const mail = this.regForm.get('email')?.value;
+
       // this.authService.registerUser(user).pipe(
       //   takeUntil(this.subscriptions)).subscribe((data) => {
       //     if (data?.success) {

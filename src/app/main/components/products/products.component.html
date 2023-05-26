@@ -1,9 +1,8 @@
 <ng-container *ngIf="productList$ | async as productList">
   <h3 nz-typography>{{ category }}</h3>
-
   <div nz-row>
     <div class="wrap-item" nz-col nzSpan="6" *ngFor="let item of productList">
-      <div class="item" *ngIf="item.quantity > 0">
+      <div class="item" *ngIf="item.count > 0">
         <div class="item-title">{{ item.description }} {{ item.name }}</div>
         <div class="item-photo">
           <span nz-icon nzType="camera" nzTheme="outline"></span>
@@ -15,7 +14,7 @@
           <nz-input-number
             [(ngModel)]="item.bought"
             [nzMin]="1"
-            [nzMax]="item.quantity"
+            [nzMax]="item.count"
             [nzStep]="1"
           ></nz-input-number>
         </div>
@@ -24,7 +23,7 @@
           <button nzType="primary" nz-button (click)="buyItem(item)">
             <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>Купить
           </button>
-          <span class="quantity"> На складе: {{ item.quantity }}</span>
+          <span class="quantity"> На складе: {{ item.count }}</span>
         </div>
       </div>
     </div>

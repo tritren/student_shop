@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <ng-container *ngIf="inSystem; else cart">
+  <ng-container *ngIf="!inSystem; else cart">
     <button nz-button nzType="link" routerLink="authorization/auth">
       Вход
     </button>
