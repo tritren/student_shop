@@ -1,87 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-// import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { takeUntil } from 'rxjs';
 import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
-// import { IAuthModel } from 'src/app/models/auth.model';
 import { AuthService } from '../../service/auth.service';
+import { IRegUserModel } from 'src/app/models/reg-user.model';
+import { StateUserService } from 'src/app/service/state.auth.service';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.less'],
-  providers: [CookieService]
+  styleUrls: ['./auth.component.less']
 })
 export class AuthComponent extends BaseDestroyableComponent implements OnInit {
 
   public userLoginForm!: UntypedFormGroup;
   public cookie!: string
-  // public encodingJwt!: IAuthModel
+
   constructor(
     private fb: UntypedFormBuilder,
     private authService: AuthService,
     private cookieService: CookieService,
-    // private jwtHelperService: JwtHelperService,
-
+    private stateUserService: StateUserService,
+    private notification: NzNotificationService,
     private router: Router,
-  ) {
-
-    super();
-
-
-  }
-
+  ) { super(); }
 
   ngOnInit(): void {
     this.initForm()
-    // this.loginVerification();
   }
 
 
   initForm() {
     this.userLoginForm = this.fb.group({
-      email: [null, [Validators.required]],
+      role: [null, [Validators.required]],
+      name: [null, [Validators.required]],
       password: [null, [Validators.required]]
     })
   }
 
 
-  loginVerification() {
-    // this.cookie = this.cookieService.get('access_token');
-
-    if (this.cookie) {
-      // this.encodingJwt = this.jwtHelperService.decodeToken(this.cookie) as IAuthModel;
-      // if (this.encodingJwt.roles.some(v => v.value === "ADMIN")) {
-      //   this.router.navigate(['admin/dashboard'])
-      // } else if (this.encodingJwt.roles.some(v => v.value === "USER")) {
-      //   this.router.navigate(['/'])
-      // }
-    }
-  }
-
-
-
 
   public userLogin(): void {
     if (this.userLoginForm.valid) {
-
-      this.authService.logIn(this.userLoginForm.value)
+      this.authService.authorizationUser({ ...this.userLoginForm.value } as IRegUserModel)
         .pipe(takeUntil(this.subscriptions))
-        .subscribe(v => {
-          console.log(v);
-
+        .subscribe({
+          next: (value) => {
+            this.stateUserService.setUserRole(value);
+            this.cookieService.set('token', JSON.stringify(value), { path: '/' });
+            this.router.navigate(['/'])
+          },
+          error: () => {
+            this.notification.create('error', 'Ошибка', `Логин, роль или пароль введены не верно!`,
+              { nzPlacement: 'bottomRight', nzClass: 'notification', nzDuration: 4500 })
+          }
         })
-
-
-      // this.authService.login(this.userLoginForm.value)
-      //   .pipe(takeUntil(this.subscriptions)).subscribe((data) => {
-      //     if (data.success) {
-      //       this.router.navigate(data.role == 'ADMIN' ? ['admin/dashboard'] : ['/personal-account'])
-      //     }
-      //   })
     }
   }
 }

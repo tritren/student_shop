@@ -9,6 +9,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { RegRoutingModule } from './reg-user-routing.module';
 import { RegComponent } from './reg-user.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzButtonModule,
     NzTypographyModule,
     NzIconModule,
-  ]
+  ],
+  providers: [CookieService ]
 })
 export class RegModule { }

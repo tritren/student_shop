@@ -8,13 +8,30 @@
     (ngSubmit)="userLogin()"
   >
     <nz-form-item>
-      <nz-form-control nzErrorTip="Введите ваш email!">
+      <nz-form-control nzErrorTip="Выберете роль!">
+        <nz-input-group>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Выберете роль"
+            formControlName="role"
+          >
+            <nz-option nzLabel="Заказчик" nzValue="Customer"></nz-option>
+            <nz-option nzLabel="Администратор" nzValue="Admin"></nz-option>
+            <nz-option nzLabel="Менеджер" nzValue="Manager"></nz-option>
+            <nz-option nzLabel="Сотрудник" nzValue="Worker"></nz-option>
+          </nz-select>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Введите ваш логин!">
         <nz-input-group>
           <input
-            formControlName="email"
+            formControlName="name"
             nz-input
             type="text"
-            placeholder="Ведите email"
+            placeholder="Ведите логин"
           />
         </nz-input-group>
       </nz-form-control>

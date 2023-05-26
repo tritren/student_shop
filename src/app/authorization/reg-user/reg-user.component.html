@@ -11,7 +11,7 @@
       <nz-form-control nzErrorTip="Введите Ф.И.О!">
         <nz-input-group>
           <input
-            formControlName="fio"
+            formControlName="fullName"
             nz-input
             type="text"
             placeholder="Ф.И.О"
@@ -35,7 +35,7 @@
       <nz-form-control nzErrorTip="Введите вашу электронную почту!">
         <nz-input-group>
           <input
-            formControlName="email"
+            formControlName="mail"
             nz-input
             type="email"
             autocomplete="new-email"
@@ -49,10 +49,10 @@
         <nz-input-group>
           <input
             formControlName="phone"
-            pattern="[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+
             nz-input
             type="tel"
-            placeholder="Телефон. Формат: 8-029-111-11-11"
+            placeholder="Телефон"
           />
         </nz-input-group>
       </nz-form-control>

@@ -1,17 +1,19 @@
 <div class="wrapper">
-  <ng-container *ngIf="!inSystem; else cart">
+  <ng-container *ngIf="inSystem$ | async as inSystem; else logout">
+    <button nz-button nzType="link" routerLink="cart">
+      Корзина <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
+    </button>
+    |
+    <button nz-button nzType="link" (click)="logOut()">Выход</button>
+  </ng-container>
+
+  <ng-template #logout>
     <button nz-button nzType="link" routerLink="authorization/auth">
       Вход
     </button>
     |
     <button nz-button nzType="link" routerLink="authorization/reg">
       Регистрация
-    </button>
-  </ng-container>
-
-  <ng-template #cart>
-    <button nz-button nzType="link" routerLink="cart">
-      Корзина <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
     </button>
   </ng-template>
 </div>

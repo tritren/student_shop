@@ -7,9 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthComponent } from './auth.component';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { AuthService } from 'src/app/service/auth.service';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @NgModule({
   declarations: [AuthComponent],
@@ -20,8 +19,9 @@ import { AuthService } from 'src/app/service/auth.service';
     //NG-ZORRO
     NzFormModule,
     NzInputModule,
-    NzButtonModule
+    NzButtonModule,
+    NzSelectModule
   ],
-  providers: [CookieService ]
+  providers: [CookieService, NzNotificationService]
 })
 export class AuthModule { }

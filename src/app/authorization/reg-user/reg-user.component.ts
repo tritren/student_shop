@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { RegUserModel } from 'src/app/models/reg-user.medel';
 import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
-// import { AuthService } from '../../service/auth.service';
-// import { RegUserModel } from 'src/app/models/reg-user.medel';
-// import { ISeoPage } from 'src/app/models/seo-page.model';
+import { AuthService } from '../../service/auth.service';
+import { CookieService } from 'ngx-cookie-service';
+import { StateUserService } from 'src/app/service/state.auth.service';
+
 
 @Component({
   selector: 'app-reg',
   templateUrl: './reg-user.component.html',
-  styleUrls: ['./reg-user.component.less']
+  styleUrls: ['./reg-user.component.less'],
+
 })
 export class RegComponent extends BaseDestroyableComponent {
 
@@ -22,8 +22,9 @@ export class RegComponent extends BaseDestroyableComponent {
 
   constructor(
     private fb: UntypedFormBuilder,
-    // private authService: AuthService,
-    private notification: NzNotificationService,
+    private authService: AuthService,
+    private stateUserService: StateUserService,
+    private cookieService: CookieService,
     private router: Router,
   ) {
     super();
@@ -33,10 +34,10 @@ export class RegComponent extends BaseDestroyableComponent {
 
   initForm() {
     this.regForm = this.fb.group({
-      fio: [null, [Validators.required]],
+      fullName: [null, [Validators.required]],
       login: [null, [Validators.required]],
       phone: [null, [Validators.required,]],
-      email: [null, [Validators.required, Validators.email]],
+      mail: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]]
     });
@@ -52,7 +53,6 @@ export class RegComponent extends BaseDestroyableComponent {
   };
 
   updateConfirmValidator(): void {
-    /** wait for refresh value */
     Promise.resolve().then(() => this.regForm.controls['confirmPassword'].updateValueAndValidity());
   }
 
@@ -61,20 +61,14 @@ export class RegComponent extends BaseDestroyableComponent {
    */
   registerUser(): void {
     if (this.regForm.valid) {
-      console.log(this.regForm.value);
-
-      const user = new RegUserModel(this.regForm.value);
-      const mail = this.regForm.get('email')?.value;
-
-      // this.authService.registerUser(user).pipe(
-      //   takeUntil(this.subscriptions)).subscribe((data) => {
-      //     if (data?.success) {
-      //       this.regForm.reset()
-      //       this.notification.create('info', 'Успешная регистрация', `Для завершение регистрации, подтвердите ее на ${mail}`,
-      //         { nzPlacement: 'topRight', nzClass: 'notification', nzDuration: 4500 })
-      //         .onClose.subscribe((x) => this.router.navigate(['/']));
-      //     }
-      //   })
+      this.authService.registrationCustomer({ ...this.regForm.value })
+        .pipe(
+          takeUntil(this.subscriptions))
+        .subscribe(resp => {
+          this.stateUserService.setUserRole(resp);
+          this.cookieService.set('token', JSON.stringify(resp), { path: '/' });
+          this.router.navigate(['/'])
+        })
     }
   };
 }

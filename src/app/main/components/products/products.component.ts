@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, of, switchMap, tap } from 'rxjs';
-import { IProduct } from 'src/app/models/product.medel';
+import { map, switchMap, tap } from 'rxjs';
+import { IProduct } from 'src/app/models/product.model';
+
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -14,15 +15,18 @@ export class ProductComponent {
 
   public category!: string;
   public demoValue: number = 1;
+  public isVisibleModal: boolean = false;
+  public finalByItem: IProduct | null = null;
 
-  private productId$ = this.route.queryParams.pipe(
-    tap(v => this.category = v?.['category']),
-    map(v => v?.['id'])
+  private category$ = this.route.queryParams
+    .pipe(
+      tap(v => this.category = v?.['category']),
+      map(v => v?.['id'])
+    );
+
+  public productList$ = this.category$.pipe(
+    switchMap((id) => this.productService.getProductByCategoryId(id))
   );
-
-  // public productList$ = this.productId$.pipe(switchMap((id) => this.productService.getProduct()));
-  public productList$ = this.productService.getProduct()
-
 
   constructor(
     private route: ActivatedRoute,
@@ -30,30 +34,31 @@ export class ProductComponent {
   ) { }
 
 
+  handleCancel() {
+    this.isVisibleModal = false;
+  }
+
+  handleOk() {
+    this.isVisibleModal = false;
+  }
+
   buyItem(item: IProduct) {
+    this.isVisibleModal = !this.isVisibleModal;
+    this.finalByItem  = item
+    // this.finalByItem = {
+
+    // }
     console.log(item);
 
   }
-
-  // mockProductList: IProduct[] = [
-  //   {
-  //     id: 1,
-  //     categoryId: 1,
-  //     description: 'Тормозной диск1111',
-  //     name: 'BREMBO 08.5803.10 ',
-  //     price: 120,
-  //     quantity: 10,
-  //     bought: 1
-  //   },
-  //   {
-  //     id: 2,
-  //     categoryId: 1,
-  //     description: 'Тормозной диск222',
-  //     name: 'ZENTPARTS Z06202  ',
-  //     price: 333,
-  //     quantity: 8,
-  //     bought: 1
-  //   },
-  // ]
-
 }
+// Id
+// 	Id_заказчика
+// 	Id_менеджера
+// 	Id_сотрудника
+// 	Дата_создания
+// 	Статус
+// 	Адрес доставки
+// 	Адрес отправки
+// 	Описание
+// 	Итоговая Цена

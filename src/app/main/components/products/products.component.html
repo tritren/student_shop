@@ -1,5 +1,11 @@
 <ng-container *ngIf="productList$ | async as productList">
-  <h3 nz-typography>{{ category }}</h3>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>
+      <a [routerLink]="['/']">Категории</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>{{ category }}</nz-breadcrumb-item>
+  </nz-breadcrumb>
+
   <div nz-row>
     <div class="wrap-item" nz-col nzSpan="6" *ngFor="let item of productList">
       <div class="item" *ngIf="item.count > 0">
@@ -28,4 +34,21 @@
       </div>
     </div>
   </div>
+
+  <ng-container *ngIf="productList.length == 0">
+    <div class="empty">Нет данных</div>
+  </ng-container>
 </ng-container>
+
+<nz-modal
+  [(nzVisible)]="isVisibleModal"
+  nzOkText="Купить"
+  nzTitle="Подтверждение покупки"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-container *nzModalContent>
+    {{finalByItem}}
+  </ng-container>
+
+</nz-modal>

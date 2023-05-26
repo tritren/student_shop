@@ -18,17 +18,14 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { MainComponent } from './main/main.component';
-import { MainModule } from './main/main.module';
 import { AuthorizationMenuComponent } from './common/authorization-menu/authorization-menu.component';
 import { JwtModule } from '@auth0/angular-jwt';
 
 
-// import { CategoryComponent } from './modules/common/category/category.component';
 
 
 export function tokenGetter() {
-  return localStorage.getItem("access_token");
+  return localStorage.getItem("token");
 }
 
 

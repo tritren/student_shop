@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-// import { environment } from 'src/environments/environment';
-import { IRegUserModel } from '../models/reg-user.medel';
+import { environment } from 'src/environments/environment';
+import { IRegUserModel } from '../models/reg-user.model';
+import { ICustomer, IRoleResponse } from '../models/customer.model';
 // import { IReqModel } from '../models/req-model';
 
 
@@ -14,7 +15,7 @@ import { IRegUserModel } from '../models/reg-user.medel';
 })
 export class AuthService {
 
-  // private apiUrl = environment.apiServerUrl;
+  private apiUrl = environment.appUrl;
   // private cookieServiceDomain = environment.cookieService.domain;
 
   // private HEADERS = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -31,68 +32,14 @@ export class AuthService {
   ) {
   }
 
-  setCookie(val: any) {
-    const token = JSON.stringify(val);
 
-    this.cookieService.set('access_token', 'token');
+  registrationCustomer(customer: ICustomer): Observable<IRoleResponse> {
+    return this.http.post<IRoleResponse>(this.apiUrl + '/api/Customer', customer);
   }
 
-  logIn(val: any): Observable<boolean> {
-    this.setCookie(val)
-    // if (!this.checkCookie()) {
-    //   console.log(val);
 
-    //   this.setCookie(val)
-    // }
-    // const resp = this.checkCookie()
-    return of(true)
+  authorizationUser(user: IRegUserModel): Observable<IRoleResponse> {
+    return this.http.post<IRoleResponse>(this.apiUrl + '/api/Auth', user);
   }
 
-  checkCookie(): boolean {
-    return this.cookieService.check('access_token')
-  }
-
-  // /**
-  //  * Регистрация пользователя
-  //  * @param user
-  //  */
-  // public registerUser(user: IRegUserModel): Observable<IReqModel> {
-  //   return this.http.post<IReqModel>(this.apiUrl + '/auth/registration', user, { headers: this.HEADERS, withCredentials: true })
-  // }
-
-  // /**
-  //  * Авторизация пользователя
-  //  * @param user
-  //  */
-  // public login(user: IRegUserModel): Observable<IReqModel> {
-  //   return this.http.post<IReqModel>(this.apiUrl + '/auth/login', user, { headers: this.HEADERS, withCredentials: true })
-  // }
-
-
-  // /**
-  //  * проверяем
-  //  * авторизован пользователь или нет
-  //  * @returns
-  //  */
-  // public isLoggedIn(): boolean {
-  //   const token = this.cookieService.get('access_token');
-  //   return token != null && !this.jwtHelperService.isTokenExpired(token);
-  // }
-
-
-  // /**
-  //  * выходим из приложения
-  //  */
-  // public logOut(): boolean {
-  //   this.cookieService.delete('access_token', '/', this.cookieServiceDomain);
-  //   return this.cookieService.check('access_token');
-  // }
-
-  // /**
-  //  * обновляем значение переменной
-  //  * залогинен пользователь или нет
-  //  */
-  // public updatedUserIsLoggedIn(data: boolean) {
-  //   this.userIsLoggedIn.next(data)
-  // }
 }

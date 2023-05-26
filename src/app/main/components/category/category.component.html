@@ -1,7 +1,11 @@
-<h3 nz-typography>Категории</h3>
+<nz-breadcrumb [nzSeparator]="null">
+  <nz-breadcrumb-item>
+    <a [routerLink]="['/']">Категории</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-separator>:</nz-breadcrumb-separator>
+</nz-breadcrumb>
 
 <ng-container *ngIf="categoryList$ | async as categoryList">
-
   <div nz-row>
     <div class="wrap-item" nz-col nzSpan="6" *ngFor="let item of categoryList">
       <div
@@ -14,4 +18,3 @@
     </div>
   </div>
 </ng-container>
-
