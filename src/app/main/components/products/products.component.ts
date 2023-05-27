@@ -1,22 +1,30 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, switchMap, takeUntil, tap } from 'rxjs';
+import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
+import { IRoleResponse } from 'src/app/models/customer.model';
+import { IOrder } from 'src/app/models/order.model';
 import { IProduct } from 'src/app/models/product.model';
+import { OrderService } from 'src/app/service/order.service';
 
 import { ProductService } from 'src/app/service/product.service';
+import { StateUserService } from 'src/app/service/state.auth.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './products.component.html',
   styleUrls: ['./product.component.less'],
-  providers: [ProductService]
+  providers: [ProductService, OrderService]
 })
-export class ProductComponent {
+export class ProductComponent extends BaseDestroyableComponent {
 
+  public orderForm!: UntypedFormGroup;
   public category!: string;
   public demoValue: number = 1;
   public isVisibleModal: boolean = false;
-  public finalByItem: IProduct | null = null;
+  public finalByItem!: IProduct;
+  public userId: number | null = null;
 
   private category$ = this.route.queryParams
     .pipe(
@@ -29,36 +37,56 @@ export class ProductComponent {
   );
 
   constructor(
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
-    private productService: ProductService
-  ) { }
+    private stateUserService: StateUserService,
+    private productService: ProductService,
+    private orderService: OrderService,
+    private router: Router,
+  ) {
+    super();
+    this.stateUserService.getUserRole()
+      .pipe(takeUntil(this.subscriptions))
+      .subscribe((v: any) => this.userId = v?.id)
+  }
 
 
   handleCancel() {
     this.isVisibleModal = false;
   }
 
-  handleOk() {
-    this.isVisibleModal = false;
+  public submit(): void {
+    if (this.orderForm.valid) {
+      this.orderService.createOrder(this.orderForm.value)
+        .pipe(takeUntil(this.subscriptions))
+        .subscribe(resp => {
+          if (resp) {
+            this.handleCancel();
+            this.router.navigate(['/cart/order'])
+          }
+        })
+    }
   }
 
   buyItem(item: IProduct) {
     this.isVisibleModal = !this.isVisibleModal;
-    this.finalByItem  = item
-    // this.finalByItem = {
+    this.finalByItem = { ...item, price: item?.bought ? (item.price * item?.bought) : item.price }
+    this.initForm(this.finalByItem);
+  }
 
-    // }
-    console.log(item);
 
+  initForm(val: IProduct) {
+    this.orderForm = this.fb.group({
+      customerID: [this.userId, [Validators.required]],
+      managerID: [0],
+      workerID: [0],
+      addressFrom: ['',],
+      addressTo: [null, [Validators.required]],
+      description: [val.description, [Validators.required]],
+      items: [[
+        { itemID: val.id, price: val.price }
+      ], [Validators.required]],
+    })
   }
 }
-// Id
-// 	Id_заказчика
-// 	Id_менеджера
-// 	Id_сотрудника
-// 	Дата_создания
-// 	Статус
-// 	Адрес доставки
-// 	Адрес отправки
-// 	Описание
-// 	Итоговая Цена
+

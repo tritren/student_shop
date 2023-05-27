@@ -11,11 +11,12 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductComponent } from './components/products/products.component';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   imports: [
     CommonModule,
     MainRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
     //NG_ZORRO
     NzLayoutModule,
@@ -33,9 +35,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzTypographyModule,
     NzIconModule,
     NzButtonModule,
+    NzFormModule,
     NzInputNumberModule,
     NzBreadCrumbModule,
-    NzModalModule
+    NzModalModule,
+    NzFormModule,
+    NzInputModule,
   ]
 })
 export class MainModule { }

@@ -1,1 +1,20 @@
-<p>order works!</p>
+<ng-container *ngIf="orderList$ | async as orderList">
+  <nz-table #basicTable [nzData]="orderList">
+    <thead>
+      <tr>
+        <th>Описание</th>
+        <th>Адрес доставки</th>
+        <th>Адрес отправки</th>
+        <th nzAlign="right">Итоговая Цена</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.description }}</td>
+        <td>{{ data.addressTo }}</td>
+        <td>{{ data.addressFrom }}</td>
+        <td nzAlign="right">{{ data.items[0].price }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-container>

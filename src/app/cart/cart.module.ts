@@ -5,7 +5,8 @@ import { CartRoutingModule } from './cart-routing.module';
 import { CartComponent } from './cart.component';
 import { OrderComponent } from './component/order/order.component';
 import { HistoryOrderComponent } from './component/history-order/history-order.component';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,11 @@ import { HistoryOrderComponent } from './component/history-order/history-order.c
   ],
   imports: [
     CommonModule,
-    CartRoutingModule
+    CartRoutingModule,
+
+    //NG_ZORRO
+    NzTableModule,
+    NzDividerModule,
   ]
 })
 export class CartModule { }

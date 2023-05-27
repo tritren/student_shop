@@ -43,12 +43,57 @@
 <nz-modal
   [(nzVisible)]="isVisibleModal"
   nzOkText="Купить"
+  [nzFooter]="null"
   nzTitle="Подтверждение покупки"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
 >
   <ng-container *nzModalContent>
-    {{finalByItem}}
-  </ng-container>
+    <ul>
+      <li>
+        Название: <b>{{ finalByItem.name }}</b>
+      </li>
+      <li>
+        Описание: <b>{{ finalByItem.description }}</b>
+      </li>
+      <li>
+        Цена: <b>{{ finalByItem.price }} </b>р.
+      </li>
+      <li>
+        Количество: <b>{{ finalByItem.bought }}</b>
+      </li>
+    </ul>
 
+    <form
+      nz-form
+      [nzLayout]="'vertical'"
+      [formGroup]="orderForm"
+      (ngSubmit)="submit()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Введите ваш адрес!">
+          <nz-input-group>
+            <input
+              formControlName="addressTo"
+              nz-input
+              type="text"
+              placeholder="Адрес доставки"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <div class="footer">
+            <button nz-button nzType="primary" [disabled]="!orderForm.valid">
+              Купить
+            </button>
+
+            <div *ngIf="!orderForm.valid && userId == null" >
+              Необходимо войти в систему
+            </div>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
 </nz-modal>
