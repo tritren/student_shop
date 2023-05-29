@@ -25,13 +25,17 @@ export class StorageForCartItemService {
 
 
   addItem(value: IProduct): void {
+
     let storageItem = localStorage.getItem(this.key);
+
     if (!storageItem || storageItem == 'undefined') {
       localStorage.setItem(this.key, JSON.stringify([value]));
     } else {
+
       if (![...JSON.parse(storageItem)].some(v => v.id == value.id)) {
         localStorage.setItem(this.key, JSON.stringify([...JSON.parse(storageItem), ...[value]]));
       } else {
+
         let countData = [...JSON.parse(storageItem)];
         countData.forEach((v: IProduct) => {
           if (v.id == value.id) {
@@ -39,7 +43,9 @@ export class StorageForCartItemService {
             v.price = v.price + value.price
           }
         })
+
         localStorage.setItem(this.key, JSON.stringify(countData));
+
       }
     }
     this.setProductList(localStorage.getItem(this.key))

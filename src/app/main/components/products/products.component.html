@@ -7,32 +7,44 @@
   </nz-breadcrumb>
 
   <div nz-row>
-    <div class="wrap-item" nz-col nzXs="24" nzSm="12" nzMd="8" nzXl="6" *ngFor="let item of productList">
-      <div class="item" *ngIf="item.count > 0">
-        <div class="item-title">{{ item.description }} {{ item.name }}</div>
-        <div class="item-photo">
-          <span nz-icon nzType="camera" nzTheme="outline"></span>
-        </div>
-        <div class="item-price">
-          <div class="price">
-            Цена: <b>{{ item.price }}</b> р.
+    <ng-container *ngFor="let item of productList">
+      <div
+        class="wrap-item"
+        nz-col
+        nzXs="24"
+        nzSm="12"
+        nzMd="8"
+        nzXl="6"
+        *ngIf="item.count > 0"
+      >
+        <div class="item">
+          <div class="item-title">{{ item.description }} {{ item.name }}</div>
+          <div class="item-photo">
+            <span nz-icon nzType="camera" nzTheme="outline"></span>
           </div>
-          <nz-input-number
-            [(ngModel)]="item.bought"
-            [nzMin]="1"
-            [nzMax]="item.count"
-            [nzStep]="1"
-          ></nz-input-number>
-        </div>
+          <div class="item-price">
+            <div class="price">
+              Цена: <b>{{ item.price }}</b> р.
+            </div>
+            <nz-input-number
+              [(ngModel)]="item.bought"
+              [nzMin]="1"
+              [nzMax]="item.count"
+              (ngModelChange)="count(item)"
+              [nzStep]="1"
+            ></nz-input-number>
+          </div>
 
-        <div class="item-footer">
-          <button nzType="primary" nz-button (click)="buyItem(item)">
-            <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>Купить
-          </button>
-          <span class="quantity"> На складе: {{ item.count }}</span>
+          <div class="item-footer">
+            <button nzType="primary" nz-button (click)="buyItem(item)">
+              <span nz-icon nzType="shopping-cart" nzTheme="outline"></span
+              >Добавить в корзину
+            </button>
+            <span class="quantity"> На складе: {{ item.count }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 
   <ng-container *ngIf="productList.length == 0">

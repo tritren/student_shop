@@ -9,21 +9,47 @@
         <tr>
           <th nzAlign="left">Категория</th>
           <th nzAlign="center">Продукт</th>
-          <th nzAlign="center">Количество</th>
+          <th nzAlign="center">В корзине</th>
+          <th nzAlign="center">Наличие</th>
           <th nzAlign="right">Итоговая цена</th>
+          <th nzAlign="center"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
+        <tr
+          *ngFor="let data of basicTable.data"
+          [ngClass]="{ 'no-valid': data.bought > data.count }"
+        >
           <td nzAlign="left">{{ data.name }}</td>
           <td nzAlign="center">{{ data.description }}</td>
-          <td nzAlign="center">{{ data.bought }}</td>
+          <td nzAlign="center">
+            <nz-input-number
+              [(ngModel)]="data.bought"
+              [nzMin]="1"
+              [nzMax]="data.count"
+              (ngModelChange)="count(data)"
+              [nzStep]="1"
+            ></nz-input-number>
+          </td>
+          <td nzAlign="center">{{ data.count }} шт.</td>
           <td nzAlign="right">{{ data.price }} р.</td>
+          <td nzAlign="center">
+            <span
+              nz-tooltip
+              [nzTooltipTitle]="'Превышено максимально возможное количество'"
+              [nzTooltipColor]="'#f50'"
+              ngClass="warning"
+              *ngIf="data.bought > data.count"
+              nz-icon
+              nzType="warning"
+              nzTheme="outline"
+            ></span>
+          </td>
         </tr>
       </tbody>
     </nz-table>
-    <div nz-row nzJustify="space-between">
-      <div class="sum-order">Итого: {{ productFromStore | orderSum }} р.</div>
+    <div nz-row nzJustify="end">
+      <!-- <div class="sum-order">Итого: {{ orderSum }} р.</div> -->
       <button
         class="place-order"
         nz-button

@@ -14,7 +14,7 @@ import { ProductService } from 'src/app/service/product.service';
   providers: [ProductService]
 })
 
-export class ProductComponent   {
+export class ProductComponent {
 
   public orderForm!: UntypedFormGroup;
   public category!: string;
@@ -37,6 +37,9 @@ export class ProductComponent   {
     private localCartStorService: StorageForCartItemService,
   ) { }
 
+  count(item: IProduct) {
+    item.price = item.itemPrice * item.bought
+  }
 
   buyItem(item: IProduct) {
     this.localCartStorService.addItem(item)

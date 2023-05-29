@@ -1,6 +1,6 @@
 <ng-container *ngIf="orderList$ | async as orderList">
   <ng-container *ngIf="orderList.length > 0; else empty">
-    <nz-table #basicTable [nzData]="orderList" [nzShowPagination]="false">
+    <nz-table #basicTable [nzData]="orderList" >
       <thead>
         <tr>
           <th>Номер заказа</th>
@@ -17,8 +17,8 @@
             <td nzAlign="center">
               <div [ngSwitch]="data.status">
                 <div *ngSwitchCase="statusEnum['Awaiting']">В ожидании</div>
-                <div *ngSwitchCase="statusEnum['InProcess']">В процессе</div>
-                <div *ngSwitchCase="statusEnum['Delivering']">Доставлен</div>
+                <div *ngSwitchCase="statusEnum['InProcess']">В обработка</div>
+                <div *ngSwitchCase="statusEnum['Delivering']">В пути</div>
               </div>
             </td>
             <td nzAlign="center">{{ data.description }}</td>

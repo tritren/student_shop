@@ -21,7 +21,7 @@ export class OrderComponent {
   constructor(
     private orderService: OrderService,
     private stateUserService: StateUserService,
-  ) {console.log(this.statusEnum);
+  ) {
    }
 
 }

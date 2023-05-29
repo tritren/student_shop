@@ -15,6 +15,9 @@ import { OrderSumPipe } from '../pipe/order-sum.pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzModalModule,
     NzFormModule,
     NzInputModule,
+    NzInputNumberModule,
+    NzIconModule,
+    NzToolTipModule
   ]
 })
 export class CartModule { }
