@@ -20,7 +20,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AuthorizationMenuComponent } from './common/authorization-menu/authorization-menu.component';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 
 
@@ -59,7 +59,8 @@ registerLocaleData(ru);
     NzMenuModule,
     NzButtonModule,
     NzTypographyModule,
-    NzLayoutModule
+    NzLayoutModule,
+    NzBadgeModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: ru_RU }

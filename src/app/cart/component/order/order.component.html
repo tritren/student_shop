@@ -1,20 +1,37 @@
 <ng-container *ngIf="orderList$ | async as orderList">
-  <nz-table #basicTable [nzData]="orderList">
-    <thead>
-      <tr>
-        <th>Описание</th>
-        <th>Адрес доставки</th>
-        <th>Адрес отправки</th>
-        <th nzAlign="right">Итоговая Цена</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.description }}</td>
-        <td>{{ data.addressTo }}</td>
-        <td>{{ data.addressFrom }}</td>
-        <td nzAlign="right">{{ data.items[0].price }}</td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <ng-container *ngIf="orderList.length > 0; else empty">
+    <nz-table #basicTable [nzData]="orderList" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>Номер заказа</th>
+          <th nzAlign="center">Статус</th>
+          <th nzAlign="center">Описание</th>
+          <th nzAlign="center">Адрес доставки</th>
+          <th nzAlign="center">Адрес отправки</th>
+          <th nzAlign="right">Цена</th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of basicTable.data">
+        <tbody>
+          <tr>
+            <td>{{ data.id }}</td>
+            <td nzAlign="center">
+              <div [ngSwitch]="data.status">
+                <div *ngSwitchCase="statusEnum['Awaiting']">В ожидании</div>
+                <div *ngSwitchCase="statusEnum['InProcess']">В процессе</div>
+                <div *ngSwitchCase="statusEnum['Delivering']">Доставлен</div>
+              </div>
+            </td>
+            <td nzAlign="center">{{ data.description }}</td>
+            <td nzAlign="center">{{ data.addressTo }}</td>
+            <td nzAlign="center">{{ data.addressFrom }}</td>
+            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </nz-table>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
 </ng-container>

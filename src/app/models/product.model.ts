@@ -5,5 +5,6 @@ export interface IProduct {
   price: number
   count: number
   description: string;
-  bought?: number;
+  bought: number;
+  status: string;
 }

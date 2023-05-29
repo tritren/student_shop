@@ -35,7 +35,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzTypographyModule,
     NzIconModule,
     NzButtonModule,
-    NzFormModule,
     NzInputNumberModule,
     NzBreadCrumbModule,
     NzModalModule,

@@ -1,36 +1,64 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from '../models/product.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
-export class LocalStorageForCartItemService {
+@Injectable({ providedIn: 'root' })
 
-  private key: string = 'cart-list'
+export class StorageForCartItemService {
 
-  private HEADERS = new HttpHeaders({ 'Content-Type': 'application/json' });
-  constructor(private http: HttpClient) {
+  private productList$: BehaviorSubject<IProduct[]> = new BehaviorSubject<IProduct[]>([]);
 
+  private key: string = 'cart-list';
+
+  constructor() { }
+
+
+  getProductList() {
+    return this.productList$.asObservable();
+  }
+
+  setProductList(v: string | null) {
+    if (v) {
+      this.productList$.next(JSON.parse(v));
+    }
   }
 
 
-  addItem(value: IProduct) {
+  addItem(value: IProduct): void {
     let storageItem = localStorage.getItem(this.key);
-    if (!storageItem) {
+    if (!storageItem || storageItem == 'undefined') {
       localStorage.setItem(this.key, JSON.stringify([value]));
     } else {
       if (![...JSON.parse(storageItem)].some(v => v.id == value.id)) {
-        let newListItems = [...JSON.parse(storageItem), ...[value]];
-        console.log(newListItems);
-        localStorage.setItem(this.key, JSON.stringify(newListItems))
+        localStorage.setItem(this.key, JSON.stringify([...JSON.parse(storageItem), ...[value]]));
       } else {
-
+        let countData = [...JSON.parse(storageItem)];
+        countData.forEach((v: IProduct) => {
+          if (v.id == value.id) {
+            v.bought = v.bought + value.bought
+            v.price = v.price + value.price
+          }
+        })
+        localStorage.setItem(this.key, JSON.stringify(countData));
       }
     }
+    this.setProductList(localStorage.getItem(this.key))
+  }
+
+  removeItem(): void {
 
   }
 
-  removeItem() {
-
+  removeAllItem(): void {
+    localStorage.removeItem(this.key);
+    this.setProductList('[]');
   }
 
+  getItem(): IProduct[] {
+    let storageItem = localStorage.getItem(this.key);
+    if (storageItem) {
+      return JSON.parse(storageItem);
+    }
+    return [];
+  }
 }

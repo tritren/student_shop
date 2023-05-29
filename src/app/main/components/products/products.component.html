@@ -7,7 +7,7 @@
   </nz-breadcrumb>
 
   <div nz-row>
-    <div class="wrap-item" nz-col nzSpan="6" *ngFor="let item of productList">
+    <div class="wrap-item" nz-col nzXs="24" nzSm="12" nzMd="8" nzXl="6" *ngFor="let item of productList">
       <div class="item" *ngIf="item.count > 0">
         <div class="item-title">{{ item.description }} {{ item.name }}</div>
         <div class="item-photo">
@@ -39,61 +39,3 @@
     <div class="empty">Нет данных</div>
   </ng-container>
 </ng-container>
-
-<nz-modal
-  [(nzVisible)]="isVisibleModal"
-  nzOkText="Купить"
-  [nzFooter]="null"
-  nzTitle="Подтверждение покупки"
-  (nzOnCancel)="handleCancel()"
->
-  <ng-container *nzModalContent>
-    <ul>
-      <li>
-        Название: <b>{{ finalByItem.name }}</b>
-      </li>
-      <li>
-        Описание: <b>{{ finalByItem.description }}</b>
-      </li>
-      <li>
-        Цена: <b>{{ finalByItem.price }} </b>р.
-      </li>
-      <li>
-        Количество: <b>{{ finalByItem.bought }}</b>
-      </li>
-    </ul>
-
-    <form
-      nz-form
-      [nzLayout]="'vertical'"
-      [formGroup]="orderForm"
-      (ngSubmit)="submit()"
-    >
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Введите ваш адрес!">
-          <nz-input-group>
-            <input
-              formControlName="addressTo"
-              nz-input
-              type="text"
-              placeholder="Адрес доставки"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control>
-          <div class="footer">
-            <button nz-button nzType="primary" [disabled]="!orderForm.valid">
-              Купить
-            </button>
-
-            <div *ngIf="!orderForm.valid && userId == null" >
-              Необходимо войти в систему
-            </div>
-          </div>
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-</nz-modal>

@@ -1,0 +1,105 @@
+<ng-container *ngIf="productFromStore$ | async as productFromStore">
+  <ng-container *ngIf="productFromStore.length > 0; else empty">
+    <nz-table
+      #basicTable
+      [nzData]="productFromStore"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th nzAlign="left">Категория</th>
+          <th nzAlign="center">Продукт</th>
+          <th nzAlign="center">Количество</th>
+          <th nzAlign="right">Итоговая цена</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzAlign="left">{{ data.name }}</td>
+          <td nzAlign="center">{{ data.description }}</td>
+          <td nzAlign="center">{{ data.bought }}</td>
+          <td nzAlign="right">{{ data.price }} р.</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div nz-row nzJustify="space-between">
+      <div class="sum-order">Итого: {{ productFromStore | orderSum }} р.</div>
+      <button
+        class="place-order"
+        nz-button
+        nzType="primary"
+        (click)="placeOrder(productFromStore)"
+      >
+        Оформить заказ
+      </button>
+    </div>
+    <pre>{{ productFromStore | json }}</pre>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
+</ng-container>
+
+<nz-modal
+  [(nzVisible)]="isVisibleModal"
+  nzOkText="Купить"
+  [nzFooter]="null"
+  nzTitle="Подтверждение покупки"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-container *nzModalContent>
+    <form
+      nz-form
+      [nzLayout]="'vertical'"
+      [formGroup]="orderForm"
+      (ngSubmit)="submit()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Введите ваш адрес!">
+          <nz-input-group>
+            <input
+              formControlName="addressTo"
+              nz-input
+              type="text"
+              placeholder="Адрес доставки"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group>
+            <input
+              formControlName="description"
+              nz-input
+              type="text"
+              placeholder="Комментарий"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group>
+            <nz-form-label nzFor="" nzSpan="1-24"
+              >Сумма заказ: {{ orderSum }} р.</nz-form-label
+            >
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <div class="footer">
+            <button nz-button nzType="primary" [disabled]="!orderForm.valid">
+              Подтвердить
+            </button>
+
+            <div *ngIf="!orderForm.valid && userId == null">
+              Необходимо войти в систему
+            </div>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

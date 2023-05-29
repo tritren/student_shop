@@ -1,7 +1,16 @@
 <div class="wrapper">
   <ng-container *ngIf="inSystem$ | async as inSystem; else logout">
-    <button nz-button nzType="link" routerLink="cart">
-      Корзина <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
+    <button nz-button nzType="link" routerLink="cart-list">
+      <ng-container *ngIf="productFromStore$ | async as productList">
+        <nz-badge
+          [nzCount]="productList.length"
+          nzSize="small"
+          [nzOffset]="[3, -5]"
+        >
+          <span nz-icon nzType="shopping-cart" nzTheme="outline"></span>
+          Корзина
+        </nz-badge>
+      </ng-container>
     </button>
     |
     <button nz-button nzType="link" (click)="logOut()">Выход</button>
