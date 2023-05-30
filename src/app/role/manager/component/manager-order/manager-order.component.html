@@ -1,0 +1,92 @@
+<ng-container *ngIf="ordersList$ | async as orderList">
+  <ng-container *ngIf="orderList.length > 0; else empty">
+    <nz-table #basicTable [nzData]="orderList">
+      <thead>
+        <tr>
+          <th>Номер заказа</th>
+          <th nzAlign="center">Сотрудник</th>
+          <th
+            nzAlign="center"
+            [nzFilterMultiple]="filter.filterMultiple"
+            [nzFilters]="filter.listOfFilter"
+            [nzFilterFn]="filter.filterFn"
+          >
+            Статус
+          </th>
+          <th nzAlign="center">Описание</th>
+          <th nzAlign="center">Адрес доставки</th>
+          <th nzAlign="right">Цена</th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of basicTable.data">
+        <tbody>
+          <tr>
+            <td>{{ data.id }}</td>
+            <!-- Сотрудник -->
+            <td nzAlign="center">
+              <nz-select
+                [(ngModel)]="data.workerID"
+                [nzSize]="'small'"
+                (ngModelChange)="setWorker(data)"
+              >
+                <nz-option
+                  *ngFor="let option of workerList"
+                  [nzLabel]="option.fullName"
+                  [nzValue]="option.id"
+                ></nz-option>
+              </nz-select>
+            </td>
+            <!-- Статус -->
+            <td nzAlign="center">
+              <button
+                nz-button
+                nzType="link"
+                nz-popover
+                nzPopoverTrigger="hover"
+                nzPopoverTitle="Изменить статус заказа"
+                [nzPopoverContent]="popoverContent"
+              >
+                <div [ngSwitch]="data.status">
+                  <ng-template [ngSwitchCase]="statusEnum['Awaiting']">
+                    В ожидании
+                  </ng-template>
+                  <ng-template [ngSwitchCase]="statusEnum['InProcess']">
+                    В обработке
+                  </ng-template>
+                  <ng-template [ngSwitchCase]="statusEnum['Delivering']">
+                    В пути
+                  </ng-template>
+                  <ng-template [ngSwitchCase]="statusEnum['Done']">
+                    Выполнен
+                  </ng-template>
+                  <ng-template ngSwitchDefault>
+                    <button nz-button nzSize="small">
+                      <span nz-icon nzType="plus" nzTheme="outline"></span>
+                    </button>
+                  </ng-template>
+                </div>
+              </button>
+              <ng-template #popoverContent>
+                <nz-radio-group
+                  [(ngModel)]="data.status"
+                  (ngModelChange)="changeStatusOrder(data)"
+                >
+                  <label nz-radio nzValue="Awaiting"> В ожидании</label>
+                  <label nz-radio nzValue="InProcess">В обработке</label>
+                  <label nz-radio nzValue="Delivering">В пути</label>
+                  <label nz-radio nzValue="Done">Выполнен</label>
+                </nz-radio-group>
+              </ng-template>
+            </td>
+            <td nzAlign="center">{{ data.description }}</td>
+            <td nzAlign="center">{{ data.addressTo }}</td>
+            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </nz-table>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
+</ng-container>

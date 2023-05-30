@@ -23,10 +23,8 @@ export class WorkerComponent extends BaseDestroyableComponent {
   public filter = {
     filterMultiple: true,
     listOfFilter: [
-      { text: 'В ожидании', value: 'Awaiting' },
       { text: 'В обработке', value: 'InProcess' },
       { text: 'В пути', value: 'Delivering' },
-      { text: 'Доставлен', value: 'Done' },
     ],
     filterFn: (list: string[], item: any) => list.some(name => item.status.indexOf(name) !== -1)
   }
@@ -48,7 +46,6 @@ export class WorkerComponent extends BaseDestroyableComponent {
     this.orderService.changeStatusOrder(order)
       .pipe(takeUntil(this.subscriptions))
       .subscribe(() => {
-        this.getOrderList();
         this.message.success(`Статус заказа №${order.id} успешно изменен.`)
       })
   }

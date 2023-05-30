@@ -11,7 +11,7 @@
         inSystem.role == 'Admin'
       "
     >
-      <a routerLink="Worker">
+      <a [routerLink]="inSystem.role">
         <span nz-icon nzType="user" nzTheme="outline"></span>
       </a>
     </button>
