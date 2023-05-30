@@ -12,7 +12,7 @@ const routes: Routes = [
       { path: 'cart-list', pathMatch: 'full', component: CartListComponent },
       { path: 'order', component: OrderComponent },
       { path: 'history-order', component: HistoryOrderComponent },
-    ]
+    ],
   }
 ];
 

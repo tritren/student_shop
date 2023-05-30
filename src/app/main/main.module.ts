@@ -17,7 +17,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NzMessageModule } from 'ng-zorro-antd/message';
 @NgModule({
   declarations: [
     MainComponent,
@@ -40,6 +40,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzModalModule,
     NzFormModule,
     NzInputModule,
+    NzMessageModule
   ]
 })
 export class MainModule { }

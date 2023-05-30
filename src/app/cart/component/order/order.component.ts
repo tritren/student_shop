@@ -11,7 +11,16 @@ import { StateUserService } from 'src/app/service/state.auth.service';
   providers: [OrderService]
 })
 export class OrderComponent {
-
+  public filter = {
+    filterMultiple: true,
+    listOfFilter: [
+      { text: 'В ожидании', value: 'Awaiting' },
+      { text: 'В обработке', value: 'InProcess' },
+      { text: 'В пути', value: 'Delivering' },
+      { text: 'Доставлен', value: 'Done' },
+    ],
+    filterFn: (list: string[], item: any) => list.some(name => item.status.indexOf(name) !== -1)
+  }
   public statusEnum: typeof OrderStatusEnum = OrderStatusEnum;
   private userId$ = this.stateUserService.getUserRole().pipe(map(v => v?.id));
   public orderList$ = this.userId$.pipe(
@@ -22,6 +31,6 @@ export class OrderComponent {
     private orderService: OrderService,
     private stateUserService: StateUserService,
   ) {
-   }
+  }
 
 }

@@ -35,6 +35,7 @@ registerLocaleData(ru);
   declarations: [
     AppComponent,
     AuthorizationMenuComponent,
+
   ],
   imports: [
     BrowserModule,

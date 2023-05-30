@@ -5,7 +5,9 @@ export interface IOrder {
   addressFrom: string;
   addressTo: string;
   description: string;
-  items: IOrderItem
+  items: IOrderItem[];
+  status: string
+  id: string;
 }
 
 export interface IOrderItem {

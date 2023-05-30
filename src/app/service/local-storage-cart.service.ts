@@ -24,7 +24,7 @@ export class StorageForCartItemService {
   }
 
 
-  addItem(value: IProduct): void {
+  addItem(value: IProduct): boolean {
 
     let storageItem = localStorage.getItem(this.key);
 
@@ -48,7 +48,8 @@ export class StorageForCartItemService {
 
       }
     }
-    this.setProductList(localStorage.getItem(this.key))
+    this.setProductList(localStorage.getItem(this.key));
+    return true;
   }
 
   removeItem(): void {

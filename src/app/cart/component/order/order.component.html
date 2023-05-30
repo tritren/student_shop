@@ -1,10 +1,17 @@
 <ng-container *ngIf="orderList$ | async as orderList">
   <ng-container *ngIf="orderList.length > 0; else empty">
-    <nz-table #basicTable [nzData]="orderList" >
+    <nz-table #basicTable [nzData]="orderList">
       <thead>
         <tr>
           <th>Номер заказа</th>
-          <th nzAlign="center">Статус</th>
+          <th
+            nzAlign="center"
+            [nzFilterMultiple]="filter.filterMultiple"
+            [nzFilters]="filter.listOfFilter"
+            [nzFilterFn]="filter.filterFn"
+          >
+            Статус
+          </th>
           <th nzAlign="center">Описание</th>
           <th nzAlign="center">Адрес доставки</th>
           <th nzAlign="right">Цена</th>
@@ -17,7 +24,7 @@
             <td nzAlign="center">
               <div [ngSwitch]="data.status">
                 <div *ngSwitchCase="statusEnum['Awaiting']">В ожидании</div>
-                <div *ngSwitchCase="statusEnum['InProcess']">В обработка</div>
+                <div *ngSwitchCase="statusEnum['InProcess']">В обработке</div>
                 <div *ngSwitchCase="statusEnum['Delivering']">В пути</div>
               </div>
             </td>

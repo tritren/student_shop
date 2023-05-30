@@ -35,13 +35,30 @@
             ></nz-input-number>
           </div>
 
-          <div class="item-footer">
-            <button nzType="primary" nz-button (click)="buyItem(item)">
-              <span nz-icon nzType="shopping-cart" nzTheme="outline"></span
-              >Добавить в корзину
-            </button>
-            <span class="quantity"> На складе: {{ item.count }}</span>
-          </div>
+          <ng-container *ngIf="inSystem$ | async as inSystem; else noCustomer">
+            <div class="item-footer">
+              <button
+                nzType="primary"
+                nz-button
+                (click)="buyItem(item)"
+                [disabled]="inSystem.role !== 'Customer'"
+              >
+                <span nz-icon nzType="shopping-cart" nzTheme="outline"></span
+                >Добавить в корзину
+              </button>
+              <span class="quantity"> На складе: {{ item.count }}</span>
+            </div>
+          </ng-container>
+
+          <ng-template #noCustomer>
+            <div class="item-footer">
+              <button nzType="primary" nz-button (click)="buyItem(item)">
+                <span nz-icon nzType="shopping-cart" nzTheme="outline"></span
+                >Добавить в корзину
+              </button>
+              <span class="quantity"> На складе: {{ item.count }}</span>
+            </div>
+          </ng-template>
         </div>
       </div>
     </ng-container>

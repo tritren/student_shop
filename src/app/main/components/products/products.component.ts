@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Observable, map, switchMap, takeUntil, tap } from 'rxjs';
+import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
+import { IRoleResponse } from 'src/app/models/customer.model';
 import { IProduct } from 'src/app/models/product.model';
 import { StorageForCartItemService } from 'src/app/service/local-storage-cart.service';
 import { ProductService } from 'src/app/service/product.service';
+import { StateUserService } from 'src/app/service/state.auth.service';
 
 
 @Component({
@@ -14,7 +18,7 @@ import { ProductService } from 'src/app/service/product.service';
   providers: [ProductService]
 })
 
-export class ProductComponent {
+export class ProductComponent extends BaseDestroyableComponent {
 
   public orderForm!: UntypedFormGroup;
   public category!: string;
@@ -29,19 +33,31 @@ export class ProductComponent {
       map(v => v?.['id'])
     );
 
+  inSystem$: Observable<IRoleResponse | null> = this.stateUserService.getUserRole();
   public productList$ = this.category$.pipe(switchMap((id) => this.productService.getProductByCategoryId(id)));
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private localCartStorService: StorageForCartItemService,
-  ) { }
+    public stateUserService: StateUserService,
+    private message: NzMessageService
+  ) { super() }
 
   count(item: IProduct) {
-    item.price = item.itemPrice * item.bought
+    item.price = item.itemPrice * item.bought;
   }
 
-  buyItem(item: IProduct) {
-    this.localCartStorService.addItem(item)
+  buyItem(item: IProduct, val: any = null) {
+    this.inSystem$.pipe(takeUntil(this.subscriptions))
+      .subscribe(v => {
+        if (v && item) {
+          if (this.localCartStorService.addItem(item)) {
+            this.message.success(`${item.description} добавлен в корзину!`);
+          }
+        } else {
+          this.message.info(`Пожалуиста авторизуйтесь!`);
+        }
+      })
   }
 }

@@ -1,6 +1,27 @@
 <div class="wrapper">
   <ng-container *ngIf="inSystem$ | async as inSystem; else logout">
-    <button nz-button nzType="link" routerLink="cart-list">
+    {{ inSystem | json }}
+
+    <button
+      nz-button
+      nzType="link"
+      *ngIf="
+        inSystem.role == 'Worker' ||
+        inSystem.role == 'Manager' ||
+        inSystem.role == 'Admin'
+      "
+    >
+      <a routerLink="Worker">
+        <span nz-icon nzType="user" nzTheme="outline"></span>
+      </a>
+    </button>
+
+    <button
+      nz-button
+      nzType="link"
+      routerLink="cart-list"
+      *ngIf="inSystem.role == 'Customer'"
+    >
       <ng-container *ngIf="productFromStore$ | async as productList">
         <nz-badge
           [nzCount]="productList.length"
@@ -12,6 +33,7 @@
         </nz-badge>
       </ng-container>
     </button>
+
     |
     <button nz-button nzType="link" (click)="logOut()">Выход</button>
   </ng-container>

@@ -1,0 +1,71 @@
+<!-- <ng-container *ngIf="ordersList$ | async  as ordersList">
+{{ordersList | json}}
+</ng-container> -->
+
+<ng-container *ngIf="ordersList$ | async as orderList">
+  <ng-container *ngIf="orderList.length > 0; else empty">
+    <nz-table #basicTable [nzData]="orderList">
+      <thead>
+        <tr>
+          <th>Номер заказа</th>
+          <th
+            nzAlign="center"
+            [nzFilterMultiple]="filter.filterMultiple"
+            [nzFilters]="filter.listOfFilter"
+            [nzFilterFn]="filter.filterFn"
+          >
+            Статус
+          </th>
+          <th nzAlign="center">Описание</th>
+          <th nzAlign="center">Адрес доставки</th>
+          <th nzAlign="right">Цена</th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of basicTable.data">
+        <tbody>
+          <tr>
+            <td>{{ data.id }}</td>
+            <td nzAlign="center">
+              <button
+                nz-button
+                nzType="link"
+                nz-popover
+                nzPopoverTrigger="click"
+                nzPopoverTitle="Изменить статус заказа"
+                [nzPopoverContent]="popoverContent"
+              >
+                <ng-template #popoverContent>
+                  <nz-radio-group
+                    [(ngModel)]="data.status"
+                    (ngModelChange)="changeStatusOrder(data)"
+                  >
+                    <label nz-radio nzValue="Awaiting">В ожидании</label>
+                    <label nz-radio nzValue="InProcess">В обработке</label>
+                  </nz-radio-group>
+                </ng-template>
+
+                <ng-container [ngSwitch]="data.status">
+                  <ng-container *ngSwitchCase="statusEnum['Awaiting']"
+                    >В ожидании</ng-container
+                  >
+                  <ng-container *ngSwitchCase="statusEnum['InProcess']"
+                    >В обработке</ng-container
+                  >
+                  <ng-container *ngSwitchCase="statusEnum['Delivering']"
+                    >В пути</ng-container
+                  >
+                </ng-container>
+              </button>
+            </td>
+            <td nzAlign="center">{{ data.description }}</td>
+            <td nzAlign="center">{{ data.addressTo }}</td>
+            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </nz-table>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
+</ng-container>
