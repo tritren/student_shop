@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Observable, takeUntil } from 'rxjs';
+import { Observable, switchMap, takeUntil } from 'rxjs';
 import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
 import { OrderStatusEnum } from 'src/app/enum/order-status.enum';
+import { IRoleResponse } from 'src/app/models/customer.model';
 import { IOrder } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/service/order.service';
+import { StateUserService } from 'src/app/service/state.auth.service';
 
 @Component({
   selector: 'app-worker',
@@ -15,8 +17,7 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class WorkerComponent extends BaseDestroyableComponent {
   public statusEnum: typeof OrderStatusEnum = OrderStatusEnum;
-  //dsdsds
-
+  private inSystem$: Observable<IRoleResponse | null> = this.stateUserService.getUserRole();
   public ordersList$!: Observable<IOrder[]>;
 
   public filter = {
@@ -32,6 +33,7 @@ export class WorkerComponent extends BaseDestroyableComponent {
 
   constructor(
     public orderService: OrderService,
+    public stateUserService: StateUserService,
     private message: NzMessageService
   ) {
     super();
@@ -39,7 +41,7 @@ export class WorkerComponent extends BaseDestroyableComponent {
   }
 
   getOrderList() {
-    this.ordersList$ = this.orderService.getWorkerOrderById(3)
+    this.ordersList$ = this.inSystem$.pipe(switchMap((v) => v ? this.orderService.getWorkerOrderById(v.id) : []))
   }
 
   changeStatusOrder(order: IOrder) {

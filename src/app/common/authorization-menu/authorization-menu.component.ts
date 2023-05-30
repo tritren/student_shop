@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { IRoleResponse } from 'src/app/models/customer.model';
@@ -22,6 +23,7 @@ export class AuthorizationMenuComponent {
   constructor(
     public cookieService: CookieService,
     public stateUserService: StateUserService,
+    public route: Router,
     public storageForCartItemService: StorageForCartItemService,
   ) {
     if (this.cookieService.get('token')) {
@@ -34,5 +36,6 @@ export class AuthorizationMenuComponent {
   logOut() {
     this.cookieService.delete('token');
     this.stateUserService.setUserRole(null);
+    this.route.navigate(['/'])
   }
 }
