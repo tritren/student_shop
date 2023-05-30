@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IWorker } from '../models/worker.model';
+import { ICustomer, IRoleResponse } from '../models/customer.model';
 
 @Injectable()
 export class WorkerService {
@@ -14,16 +15,17 @@ export class WorkerService {
     return this.http.get<IWorker[]>(this.url + '/api/Worker');
   }
 
-  // createManager(manager: ICustomer): Observable<IRoleResponse> {
-  //   return this.http.post<IRoleResponse>(this.url + '/api/Manager', manager);
-  // }
+  createWorker(worker: IWorker): Observable<IRoleResponse> {
+    return this.http.post<IRoleResponse>(this.url + '/api/Worker', worker);
+  }
 
-  // removeManger(manager: ICustomer) {
-  //   return this.http.delete<IRoleResponse>(this.url + `/api/Manager/${manager.id}`);
-  // }
+  removeWorker(worker: IWorker) {
+    return this.http.delete<IRoleResponse>(this.url + `/api/Worker/${worker.id}`);
+  }
 
-  // updateManager(manager: ICustomer) {
-  //   return this.http.put<IRoleResponse>(this.url + `/api/Manager/${manager.id}`, manager);
-  // }
+  updateWorker(worker: IWorker) {
+    debugger
+    return this.http.put<IRoleResponse>(this.url + `/api/Worker/${worker.id}`, worker);
+  }
 
 }

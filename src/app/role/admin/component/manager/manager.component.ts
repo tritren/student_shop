@@ -18,6 +18,7 @@ export class ManagerComponent extends BaseDestroyableComponent {
   public passwordVisible2 = false;
   public managerList$!: Observable<any>;
   public isVisible = false;
+  public edit = false;
 
   constructor(
     private managerService: ManagerService,
@@ -68,20 +69,32 @@ export class ManagerComponent extends BaseDestroyableComponent {
 
   registerUser(): void {
     if (this.regForm.valid) {
-
-      this.managerService.createManager({ ...this.regForm.value })
-        .pipe(
-          takeUntil(this.subscriptions))
-        .subscribe(() => {
-          this.isVisible = !this.isVisible;
-          this.getManager();
-        })
+      if (!this.edit) {
+        this.managerService.createManager({ ...this.regForm.value })
+          .pipe(
+            takeUntil(this.subscriptions))
+          .subscribe(() => {
+            this.isVisible = !this.isVisible;
+            this.getManager();
+          })
+      } else {
+        this.managerService.updateManager({ ...this.regForm.value })
+          .pipe(
+            takeUntil(this.subscriptions))
+          .subscribe(() => {
+            this.isVisible = !this.isVisible;
+            this.getManager();
+          })
+      }
+      this.edit = false;
     }
   };
 
   editManager(manager: IManager) {
     this.isVisible = !this.isVisible;
+    this.edit = !this.edit;
     this.regForm = this.fb.group({
+      id: [manager.id, [Validators.required]],
       fullName: [manager.fullName, [Validators.required]],
       login: [manager.login, [Validators.required]],
       phone: [manager.phone, [Validators.required,]],
