@@ -1,7 +1,5 @@
 <div class="wrapper">
   <ng-container *ngIf="inSystem$ | async as inSystem; else logout">
-    {{ inSystem | json }}
-
     <button
       nz-button
       nzType="link"

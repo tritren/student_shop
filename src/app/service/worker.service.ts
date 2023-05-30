@@ -14,4 +14,16 @@ export class WorkerService {
     return this.http.get<IWorker[]>(this.url + '/api/Worker');
   }
 
+  // createManager(manager: ICustomer): Observable<IRoleResponse> {
+  //   return this.http.post<IRoleResponse>(this.url + '/api/Manager', manager);
+  // }
+
+  // removeManger(manager: ICustomer) {
+  //   return this.http.delete<IRoleResponse>(this.url + `/api/Manager/${manager.id}`);
+  // }
+
+  // updateManager(manager: ICustomer) {
+  //   return this.http.put<IRoleResponse>(this.url + `/api/Manager/${manager.id}`, manager);
+  // }
+
 }
