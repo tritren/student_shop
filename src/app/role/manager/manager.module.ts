@@ -10,10 +10,15 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule} from '@angular/forms';
+
+
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @NgModule({
   declarations: [
@@ -25,15 +30,19 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     CommonModule,
     ManagerRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     //NG-ZORRO
     NzTableModule,
     NzEmptyModule,
     NzButtonModule,
+    NzInputNumberModule,
     NzPopoverModule,
     NzRadioModule,
     NzMessageModule,
     NzSelectModule,
-    NzIconModule
+    NzInputModule,
+    NzIconModule,
+    NzFormModule
   ]
 })
 export class ManagerModule { }

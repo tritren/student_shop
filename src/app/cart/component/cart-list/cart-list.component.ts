@@ -81,14 +81,12 @@ export class CartListComponent extends BaseDestroyableComponent {
   }
 
   public submit(): void {
-
     this.changeQuantityCountItem()
     if (this.orderForm.valid) {
       this.orderService.createOrder(this.orderForm.value)
         .pipe(takeUntil(this.subscriptions))
         .subscribe(resp => {
           if (resp) {
-            this.changeQuantityCountItem()
             this.handleCancel();
             this.storageForCartItemService.removeAllItem();
             this.router.navigate(['/cart-list/order'])

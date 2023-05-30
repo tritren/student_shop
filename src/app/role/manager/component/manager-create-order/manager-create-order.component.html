@@ -1,1 +1,121 @@
-<p>manager-create-order works!</p>
+<form
+  nz-form
+  [nzLayout]="'vertical'"
+  [formGroup]="orderForm"
+  (ngSubmit)="createOrder()"
+>
+  <!-- customerID -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Выберете пользователя!">
+      <nz-input-group>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Выберете пользователя"
+          formControlName="customerID"
+        >
+          <nz-option
+            *ngFor="let item of customerList"
+            [nzLabel]="item.fullName"
+            [nzValue]="item.id"
+          ></nz-option>
+        </nz-select>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Введите адрес доставки!">
+      <nz-input-group>
+        <input
+          formControlName="addressFrom"
+          nz-input
+          type="text"
+          placeholder="Адрес доставки"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Введите комментарий">
+      <nz-input-group>
+        <input
+          formControlName="description"
+          nz-input
+          type="text"
+          placeholder="Комментарий"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Выберете товар">
+      <nz-input-group>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzMode="multiple"
+          nzPlaceHolder="Товар"
+          formControlName="items"
+        >
+          <nz-option
+            *ngFor="let item of productList"
+            [nzLabel]="item.description"
+            [nzValue]="item"
+          ></nz-option>
+        </nz-select>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <ng-container *ngIf="orderForm.controls['items'].value.length > 0">
+        <!-- {{orderForm.controls['items'].value | json}} -->
+        <nz-table
+          #basicTable
+          [nzData]="orderForm.controls['items'].value"
+          [nzShowPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th nzAlign="left">Категория</th>
+              <th nzAlign="center">Продукт</th>
+              <th nzAlign="center">В корзине</th>
+              <th nzAlign="center">Наличие</th>
+              <th nzAlign="right">Итоговая цена</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of basicTable.data"
+              [ngClass]="{ 'no-valid': data.bought > data.count }"
+            >
+              <td nzAlign="left">{{ data.name }}</td>
+              <td nzAlign="center">{{ data.description }}</td>
+              <td nzAlign="center">
+                <nz-input-number
+                  [(ngModel)]="data.bought"
+                  [nzMin]="1"
+                  [nzMax]="data.count"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="count(data)"
+                  [nzStep]="1"
+                ></nz-input-number>
+              </td>
+              <td nzAlign="center">{{ data.count }} шт.</td>
+              <td nzAlign="right">{{ data.price }} р.</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </ng-container>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <div class="wrapper">
+        <button nz-button nzType="primary" [disabled]="!orderForm.valid">
+          Создать заказ
+        </button>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</form>

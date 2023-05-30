@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Observable, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, takeUntil, tap } from 'rxjs';
 import { BaseDestroyableComponent } from 'src/app/abstrations/base-destroyable.component';
 import { OrderStatusEnum } from 'src/app/enum/order-status.enum';
-import { IRoleResponse } from 'src/app/models/customer.model';
 import { IOrder } from 'src/app/models/order.model';
 import { IWorker } from 'src/app/models/worker.model';
 import { OrderService } from 'src/app/service/order.service';
@@ -18,7 +17,6 @@ import { WorkerService } from 'src/app/service/worker.service';
 })
 export class ManagerOrderComponent extends BaseDestroyableComponent {
   public statusEnum: typeof OrderStatusEnum = OrderStatusEnum;
-  private inSystem$: Observable<IRoleResponse | null> = this.stateUserService.getUserRole();
   public ordersList$!: Observable<IOrder[]>;
   public workerList: IWorker[] = [];
   public filter = {

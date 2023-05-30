@@ -13,7 +13,15 @@ export class ProductService {
   constructor(public http: HttpClient) { }
 
   getProduct(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(this.url + '/api/Product');
+    return this.http.get<IProduct[]>(this.url + '/api/Product')
+      .pipe(
+        map(resp => {
+          resp.forEach(v => {
+            v.itemPrice = v.price;
+            v.bought = 1
+          })
+          return resp
+        }));;
   }
   getProductByCategoryId(id: number): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(this.url + `/api/Product/${id}`)
