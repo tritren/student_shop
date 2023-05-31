@@ -11,7 +11,7 @@
         <nz-select
           nzShowSearch
           nzAllowClear
-          nzPlaceHolder="Выберете пользователя"
+          категорию="Выберете пользователя"
           formControlName="customerID"
         >
           <nz-option
@@ -54,7 +54,7 @@
           nzShowSearch
           nzAllowClear
           nzMode="multiple"
-          nzPlaceHolder="Товар"
+          placeholder="Товар"
           formControlName="items"
         >
           <nz-option
@@ -69,7 +69,6 @@
   <nz-form-item>
     <nz-form-control>
       <ng-container *ngIf="orderForm.controls['items'].value.length > 0">
-        <!-- {{orderForm.controls['items'].value | json}} -->
         <nz-table
           #basicTable
           [nzData]="orderForm.controls['items'].value"

@@ -59,7 +59,7 @@ export class ManagerOrderComponent extends BaseDestroyableComponent {
 
   setWorker(order: IOrder) {
     const workerFullName = this.workerList.filter(v => v.id == order.workerID).map(v => v.fullName);
-    this.orderService.changeWorkerOrder(order)
+    this.orderService.updateWorkerOrder(order)
       .pipe(takeUntil(this.subscriptions))
       .subscribe(() => {
         this.message.success(`Сотрудник ${workerFullName} назначен на заказ №${order.id}.`)

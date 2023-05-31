@@ -19,6 +19,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @NgModule({
   declarations: [
@@ -40,11 +42,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzButtonModule,
     NzPopconfirmModule,
     NzModalModule,
+    NzToolTipModule,
     NzMessageModule,
     NzSelectModule,
     NzInputModule,
     NzIconModule,
-    NzFormModule
+    NzFormModule,
+    NzRadioModule
   ]
 })
 export class AdminModule { }

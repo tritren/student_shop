@@ -23,7 +23,6 @@ export class OrderService {
     return this.http.get<IOrder[]>(this.url + `/api/Order?customerID=${id}`);
   }
 
-
   getWorkerOrderById(id: number): Observable<IOrder[]> {
     return this.http.get<IOrder[]>(this.url + `/api/Order?worderID=${id}`);
   }
@@ -32,7 +31,7 @@ export class OrderService {
     return this.http.put(this.url + `/api/Order/${order.id}/status?status=${order.status}`, { status: order.status });
   }
 
-  changeWorkerOrder(order: IOrder): Observable<any> {
-    return this.http.put(this.url + `/api/Order/${order.id}/worker?workerId=${order.workerID}`, { worker: order.workerID });
+  updateWorkerOrder(order: IOrder): Observable<any> {
+    return this.http.put(this.url + `/api/Order/${order.id}`, order);
   }
 }

@@ -52,7 +52,7 @@
 
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Добавление менеджера"
+  nzTitle="Изменение товара"
   (nzOnCancel)="handleCancel()"
   [nzFooter]="null"
 >
@@ -65,7 +65,7 @@
             <nz-select
               nzShowSearch
               nzAllowClear
-              nzPlaceHolder="Выберете категориюя"
+              placeholder="Выберете категориюя"
               formControlName="categoryID"
             >
               <ng-container *ngIf="categoryList$ | async as categoryList">

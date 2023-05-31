@@ -1,1 +1,215 @@
-<p>order works!</p>
+<ng-container *ngIf="orderList$ | async as orderList">
+  <ng-container *ngIf="orderList.length > 0; else empty">
+    <nz-table #basicTable [nzData]="orderList">
+      <thead>
+        <tr>
+          <th>Номер заказа</th>
+          <th nzAlign="center">Сотрудник</th>
+          <th nzAlign="center">Статус</th>
+          <th nzAlign="center">Описание</th>
+          <th nzAlign="center">Адрес доставки</th>
+          <th nzAlign="right">Цена</th>
+          <th nzAlign="right"></th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of basicTable.data">
+        <tbody>
+          <tr>
+            <td>{{ data.id }}</td>
+            <!-- Сотрудник -->
+            <td nzAlign="center">
+              <ng-container *ngIf="data.workerID; else emptyWorker">
+                {{ findWorker(data.workerID) }}
+              </ng-container>
+              <ng-template #emptyWorker> - </ng-template>
+            </td>
+            <!-- Статус -->
+            <td nzAlign="center">
+              <div [ngSwitch]="data.status">
+                <ng-template [ngSwitchCase]="statusEnum['Awaiting']">
+                  В ожидании
+                </ng-template>
+                <ng-template [ngSwitchCase]="statusEnum['InProcess']">
+                  В обработке
+                </ng-template>
+                <ng-template [ngSwitchCase]="statusEnum['Delivering']">
+                  В пути
+                </ng-template>
+                <ng-template [ngSwitchCase]="statusEnum['Done']">
+                  Выполнен
+                </ng-template>
+                <ng-template ngSwitchDefault> - </ng-template>
+              </div>
+            </td>
+            <td nzAlign="center">{{ data.description }}</td>
+            <td nzAlign="center">{{ data.addressTo }}</td>
+            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+            <td nzAlign="right">
+              <button nz-button nzType="link" (click)="editOrder(data)">
+                Изменить
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </nz-table>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
+</ng-container>
+
+<nz-modal
+  nzWidth="900px"
+  [(nzVisible)]="isVisible"
+  nzTitle="Изменение заказа"
+  (nzOnCancel)="handleCancel()"
+  [nzFooter]="null"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="orderForm">
+      <!-- Сотрудник -->
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Выберете workerID!">
+          <nz-form-label nzSpan="1-24"> Назначенный сотрудник: </nz-form-label>
+          <nz-input-group>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              placeholder="Выберете сотрудника"
+              formControlName="workerID"
+            >
+              <ng-container *ngIf="workerList.length > 0">
+                <nz-option
+                  *ngFor="let item of workerList"
+                  [nzLabel]="item.fullName"
+                  [nzValue]="item.id"
+                ></nz-option>
+              </ng-container>
+            </nz-select>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Статус -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label nzSpan="1-24"> Статус заказ: </nz-form-label>
+          <nz-input-group>
+            <nz-radio-group formControlName="status">
+              <label nz-radio nzValue="Awaiting"> В ожидании</label>
+              <label nz-radio nzValue="InProcess">В обработке</label>
+              <label nz-radio nzValue="Delivering">В пути</label>
+              <label nz-radio nzValue="Done">Выполнен</label>
+            </nz-radio-group>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- addressTo -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label nzSpan="1-24"> Адрес доставки: </nz-form-label>
+          <nz-input-group>
+            <input formControlName="addressTo" nz-input type="text" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Описание -->
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Введите описание продукта!">
+          <nz-form-label nzSpan="1-24"> Описание продукта: </nz-form-label>
+          <nz-input-group>
+            <input formControlName="description" nz-input type="tel" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Количество -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label nzSpan="1-24">Поиск товара: </nz-form-label>
+          <nz-input-group>
+            <div class="wraper-select">
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                [(ngModel)]="selectedProduct"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Товар"
+              >
+                <nz-option
+                  *ngFor="let item of productList"
+                  [nzValue]="item"
+                  [nzLabel]="item.name"
+                  nzCustomContent
+                  [nzDisabled]="item.count === 0"
+                >
+                  <span
+                    nz-tooltip
+                    [nzTooltipTitle]="item.count == 0 ? 'Нет в наличии!' : ''"
+                  >
+                    {{ item.name }}</span
+                  >
+                </nz-option>
+              </nz-select>
+              <button
+                [disabled]="!selectedProduct"
+                (click)="selectProduct(selectedProduct)"
+                nz-button
+                nzType="primary"
+              >
+                Добавить в заказ
+              </button>
+            </div>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label nzSpan="1-24"> Содержимое заказа: </nz-form-label>
+          <ng-container *ngIf="orderForm.controls['items'].value.length > 0">
+            <nz-table
+              nzSize="small"
+              #basicTable
+              [nzData]="orderForm.controls['items'].value"
+              [nzShowPagination]="false"
+            >
+              <thead>
+                <tr>
+                  <th nzAlign="left">Категория</th>
+                  <th nzAlign="center">Продукт</th>
+                  <th nzAlign="center">Цена</th>
+                  <th nzAlign="right"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicTable.data">
+                  <td nzAlign="left">{{ data?.name }}</td>
+                  <td nzAlign="center">{{ data?.description }}</td>
+                  <td nzAlign="center">{{ data?.price }} р.</td>
+                  <td nzAlign="right">
+                    <button nz-button nzType="link" (click)="removeItems(data)">Удалить</button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button
+            nz-button
+            (click)="confirmationEdit()"
+            nzType="primary"
+            [disabled]="!orderForm.valid"
+            style="width: 100%"
+          >
+            Изменить
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
