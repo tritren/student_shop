@@ -38,4 +38,12 @@ export class ProductService {
   updateProductById(id: number, val: IUpdateProduct): Observable<any> {
     return this.http.put<any>(this.url + `/api/Product/${id}`, val);
   }
+
+  removeProductById(val: IUpdateProduct): Observable<any> {
+    return this.http.delete<any>(this.url + `/api/Product/${val.id}`);
+  }
+
+  addProduct(val: IUpdateProduct): Observable<any> {
+    return this.http.post<any>(this.url + `/api/Product/`, val);
+  }
 }

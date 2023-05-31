@@ -1,1 +1,164 @@
-<p>product works!</p>
+<div class="wrapper-btn">
+  <button nz-button nzType="primary" (click)="addProduct()">
+    Добавить товар
+  </button>
+</div>
+
+<ng-container *ngIf="product$ | async as product">
+  <ng-container *ngIf="product.length > 0; else empty">
+    <nz-table #basicTable [nzData]="product">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th nzAlign="center">Категория</th>
+          <th nzAlign="center">Описание</th>
+          <th nzAlign="center">На складе</th>
+          <th nzAlign="center">Цена</th>
+          <th nzAlign="right"></th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of basicTable.data">
+        <tbody>
+          <tr>
+            <td>{{ data.name }}</td>
+            <td nzAlign="center">{{ data.categoryID }}</td>
+            <td nzAlign="center">{{ data.description }}</td>
+            <td nzAlign="center">{{ data.count }}</td>
+            <td nzAlign="center">{{ data.price }}</td>
+            <td nzAlign="right" nz>
+              <button nz-button nzType="link" (click)="editProduct(data)">
+                Изменить
+              </button>
+              <button
+                nz-button
+                nzType="link"
+                nz-popconfirm
+                nzPopconfirmTitle="Вы действительно хотите удалить менеджера?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="confirmRemove(data)"
+              >
+                Удалить
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </nz-table>
+  </ng-container>
+  <ng-template #empty>
+    <nz-empty nzNotFoundImage="simple" nzNotFoundContent=""></nz-empty>
+  </ng-template>
+</ng-container>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Добавление менеджера"
+  (nzOnCancel)="handleCancel()"
+  [nzFooter]="null"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="productForm">
+      <!-- Категория -->
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Выберете категорию!">
+          <nz-input-group>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Выберете категориюя"
+              formControlName="categoryID"
+            >
+              <ng-container *ngIf="categoryList$ | async as categoryList">
+                <nz-option
+                  *ngFor="let item of categoryList"
+                  [nzLabel]="item.name"
+                  [nzValue]="item.id"
+                ></nz-option>
+              </ng-container>
+            </nz-select>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Название -->
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Введите названеи продукта!">
+          <nz-input-group>
+            <input
+              formControlName="name"
+              nz-input
+              type="text"
+              placeholder="Названеи продукта"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Цена -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="userErrorTpl">
+          <nz-input-group>
+            <input
+              formControlName="price"
+              nz-input
+              placeholder="Введите цену"
+            />
+            <ng-template #userErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Введите цену на продукт!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">
+                Только цифры!
+              </ng-container>
+            </ng-template>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Количество -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="userErrorTpl1">
+          <nz-input-group>
+            <input
+              formControlName="count"
+              nz-input
+              placeholder="Количество в наличии"
+            />
+            <ng-template #userErrorTpl1 let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Введите цену на продукт!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">
+                Только цифры!
+              </ng-container>
+            </ng-template>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Описание -->
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Введите описание продукта!">
+          <nz-input-group>
+            <input
+              formControlName="description"
+              nz-input
+              type="tel"
+              placeholder="Описание продукта "
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <button
+            nz-button
+            (click)="confirmationEdit()"
+            nzType="primary"
+            [disabled]="!productForm.valid"
+            style="width: 100%"
+          >
+            Создать
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

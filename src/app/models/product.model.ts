@@ -12,6 +12,7 @@ export interface IProduct {
 }
 
 export interface IUpdateProduct {
+  id: number;
   categoryID: number;
   name: string;
   price: number;

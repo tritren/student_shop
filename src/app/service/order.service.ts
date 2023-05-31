@@ -35,6 +35,4 @@ export class OrderService {
   changeWorkerOrder(order: IOrder): Observable<any> {
     return this.http.put(this.url + `/api/Order/${order.id}/worker?workerId=${order.workerID}`, { worker: order.workerID });
   }
-  // http://localhost:5175/api/Order?worderID=3
-  // http://localhost:5175/api/Order/36/worker?workerId=3
 }
