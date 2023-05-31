@@ -33,7 +33,7 @@
                 nz-button
                 nzType="link"
                 nz-popconfirm
-                nzPopconfirmTitle="Вы действительно хотите удалить менеджера?"
+                nzPopconfirmTitle="Вы действительно хотите удалить?"
                 nzPopconfirmPlacement="bottom"
                 (nzOnConfirm)="confirmRemove(data)"
               >
@@ -52,7 +52,7 @@
 
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Изменение товара"
+  [nzTitle]="edit ? 'Изменить товар' : 'Добавить товар'"
   (nzOnCancel)="handleCancel()"
   [nzFooter]="null"
 >
@@ -65,7 +65,7 @@
             <nz-select
               nzShowSearch
               nzAllowClear
-              placeholder="Выберете категориюя"
+              placeholder="Выберете категория"
               formControlName="categoryID"
             >
               <ng-container *ngIf="categoryList$ | async as categoryList">
@@ -155,7 +155,7 @@
             [disabled]="!productForm.valid"
             style="width: 100%"
           >
-            Создать
+            Сохранить
           </button>
         </nz-form-control>
       </nz-form-item>

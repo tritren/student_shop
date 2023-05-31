@@ -43,7 +43,7 @@
             </td>
             <td nzAlign="center">{{ data.description }}</td>
             <td nzAlign="center">{{ data.addressTo }}</td>
-            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+            <td nzAlign="right">{{ data.items | orderSum }} р.</td>
             <td nzAlign="right">
               <button nz-button nzType="link" (click)="editOrder(data)">
                 Изменить
@@ -189,7 +189,9 @@
                   <td nzAlign="center">{{ data?.description }}</td>
                   <td nzAlign="center">{{ data?.price }} р.</td>
                   <td nzAlign="right">
-                    <button nz-button nzType="link" (click)="removeItems(data)">Удалить</button>
+                    <button nz-button nzType="link" (click)="removeItems(data)">
+                      Удалить
+                    </button>
                   </td>
                 </tr>
               </tbody>

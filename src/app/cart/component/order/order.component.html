@@ -30,7 +30,7 @@
             </td>
             <td nzAlign="center">{{ data.description }}</td>
             <td nzAlign="center">{{ data.addressTo }}</td>
-            <td nzAlign="right">{{ data.items[0].price }} р.</td>
+            <td nzAlign="right">{{ data.items | orderSum }} р.</td>
           </tr>
         </tbody>
       </ng-container>

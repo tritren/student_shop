@@ -10,9 +10,11 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { FormsModule } from '@angular/forms';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { OrderSumPipe } from 'src/app/pipe/order-sum.pipe';
 @NgModule({
   declarations: [
-    WorkerComponent
+    WorkerComponent,
+    OrderSumPipe,
   ],
   imports: [
     CommonModule,

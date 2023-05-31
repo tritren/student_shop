@@ -91,8 +91,8 @@ export class ManagerComponent extends BaseDestroyableComponent {
   };
 
   editManager(manager: IManager) {
+    this.edit = true;
     this.isVisible = !this.isVisible;
-    this.edit = !this.edit;
     this.regForm = this.fb.group({
       id: [manager.id, [Validators.required]],
       fullName: [manager.fullName, [Validators.required]],

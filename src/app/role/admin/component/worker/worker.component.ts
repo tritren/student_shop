@@ -92,8 +92,9 @@ export class WorkerComponent extends BaseDestroyableComponent {
   };
 
   editWorker(Worker: IWorker) {
+    this.edit = true;
     this.isVisible = !this.isVisible;
-    this.edit = !this.edit;
+
     this.regForm = this.fb.group({
       id: [Worker.id, [Validators.required]],
       fullName: [Worker.fullName, [Validators.required]],

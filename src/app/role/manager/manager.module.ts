@@ -19,12 +19,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { OrderSumPipe } from 'src/app/pipe/order-sum.pipe';
 
 @NgModule({
   declarations: [
     ManagerComponent,
     ManagerCreateOrderComponent,
-    ManagerOrderComponent
+    ManagerOrderComponent,
+    OrderSumPipe,
   ],
   imports: [
     CommonModule,

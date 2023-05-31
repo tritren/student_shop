@@ -27,7 +27,7 @@
                 nz-button
                 nzType="link"
                 nz-popconfirm
-                nzPopconfirmTitle="Вы действительно хотите удалить менеджера?"
+                nzPopconfirmTitle="Вы действительно хотите удалить сотрудника?"
                 nzPopconfirmPlacement="bottom"
                 (nzOnConfirm)="confirmRemove(data)"
               >
@@ -46,7 +46,7 @@
 
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Изменение сотрудника"
+  [nzTitle]="edit ? 'Изменить сотрудника' : 'Добавить сотрудника'"
   (nzOnCancel)="handleCancel()"
   [nzFooter]="null"
 >
@@ -147,7 +147,7 @@
             [disabled]="!regForm.valid"
             style="width: 100%"
           >
-            Создать
+            Сохранить
           </button>
         </nz-form-control>
       </nz-form-item>

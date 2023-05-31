@@ -54,10 +54,8 @@ export class ProductComponent extends BaseDestroyableComponent {
   }
 
   editProduct(data: IProduct) {
-    console.log(data);
+    this.edit = true;
     this.isVisible = !this.isVisible;
-    this.edit = !this.edit;
-
     this.productForm = this.fb.group({
       id: [data.id],
       categoryID: [data.categoryID, [Validators.required]],

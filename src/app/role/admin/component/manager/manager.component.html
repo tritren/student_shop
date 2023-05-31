@@ -50,7 +50,7 @@
 
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Добавление менеджера"
+  [nzTitle]="edit ? 'Изменить менеджера' : 'Добавить менеджера'"
   (nzOnCancel)="handleCancel()"
   [nzFooter]="null"
 >
@@ -175,7 +175,7 @@
             [disabled]="!regForm.valid"
             style="width: 100%"
           >
-            Создать
+            Сохранить
           </button>
         </nz-form-control>
       </nz-form-item>

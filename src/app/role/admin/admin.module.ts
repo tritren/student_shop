@@ -21,6 +21,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { OrderSumPipe } from 'src/app/pipe/order-sum.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     WorkerComponent,
     CustomerComponent,
     ProductComponent,
-    OrderComponent
+    OrderComponent,
+    OrderSumPipe,
   ],
   imports: [
     CommonModule,

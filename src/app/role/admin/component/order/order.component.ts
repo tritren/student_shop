@@ -24,6 +24,7 @@ export class OrderComponent extends BaseDestroyableComponent {
   customerList$: Observable<ICustomer[]> = this.customerService.getCustomerList();
   public workerList: IWorker[] = [];
   public productList: IProduct[] = [];
+  public itemsList: any[] = [];
   orderProductList: IProduct[] = []
   selectedProduct!: IProduct;
   public orderForm!: UntypedFormGroup
@@ -61,8 +62,15 @@ export class OrderComponent extends BaseDestroyableComponent {
   }
 
   editOrder(data: IOrder) {
-    this.orderProductList = [];
+    this.itemsList = [];
     this.isVisible = !this.isVisible;
+    this.orderProductList = [];
+    data.items.forEach((v: any) => {
+      if (this.productList.some(k => k.id == v.itemID)) {
+        this.itemsList.push(this.productList.find(j => j.id == v.itemID))
+      }
+    })
+
     this.orderForm = this.fb.group({
       id: [data.id, [Validators.required]],
       customerID: [data.customerID],
@@ -72,7 +80,7 @@ export class OrderComponent extends BaseDestroyableComponent {
       addressTo: [data.addressTo],
       status: [data.status],
       description: [data.description],
-      items: [data.items.map(v => this.productList.find(k => k.id == v.itemID)), [Validators.required]],
+      items: [this.itemsList, [Validators.required]],
     })
   }
 
@@ -103,8 +111,7 @@ export class OrderComponent extends BaseDestroyableComponent {
   confirmationEdit() {
     if (this.orderForm.valid) {
       let body: any = { ...this.orderForm.value };
-      let itemList = body.items.map((v: any) => v = { itemID: v.id, price: v.price })
-      console.log(itemList);
+      let itemList = body.items.map((v: any) => v = { itemID: v.id, price: v.price });
       body.items = [...itemList]
       this.orderService.updateWorkerOrder(body)
         .pipe(takeUntil(this.subscriptions))
