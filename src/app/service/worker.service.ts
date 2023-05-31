@@ -24,7 +24,6 @@ export class WorkerService {
   }
 
   updateWorker(worker: IWorker) {
-    debugger
     return this.http.put<IRoleResponse>(this.url + `/api/Worker/${worker.id}`, worker);
   }
 
