@@ -11,13 +11,13 @@ import { CartListComponent } from './component/cart-list/cart-list.component';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { OrderSumPipe } from '../pipe/order-sum.pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { PipesModule } from '../pipe/order-sum-pipe.module';
 
 @NgModule({
   declarations: [
@@ -25,13 +25,13 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     OrderComponent,
     HistoryOrderComponent,
     CartListComponent,
-    OrderSumPipe,
   ],
   imports: [
     CommonModule,
     CartRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    PipesModule,
     //NG_ZORRO
     NzTableModule,
     NzDividerModule,

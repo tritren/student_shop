@@ -19,20 +19,20 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { OrderSumPipe } from 'src/app/pipe/order-sum.pipe';
+import { PipesModule } from 'src/app/pipe/order-sum-pipe.module';
 
 @NgModule({
   declarations: [
     ManagerComponent,
     ManagerCreateOrderComponent,
     ManagerOrderComponent,
-    OrderSumPipe,
   ],
   imports: [
     CommonModule,
     ManagerRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    PipesModule,
     //NG-ZORRO
     NzTableModule,
     NzEmptyModule,
