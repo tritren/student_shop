@@ -35,12 +35,6 @@ export class ManagerCreateOrderComponent extends BaseDestroyableComponent {
     this.initForm();
     this.getCustomer();
     this.getProduct();
-
-
-    this.orderForm.valueChanges.subscribe(v => {
-      console.log(v);
-
-    })
   }
 
   initForm() {
@@ -49,8 +43,8 @@ export class ManagerCreateOrderComponent extends BaseDestroyableComponent {
       managerID: [0],
       workerID: [0],
       status: ['Awaiting', [Validators.required]],
-      addressFrom: [null, [Validators.required]],
-      addressTo: [''],
+      addressFrom: [''],
+      addressTo: [null, [Validators.required]],
       description: [null, [Validators.required]],
       items: [[], [Validators.required]],
     })
@@ -70,10 +64,25 @@ export class ManagerCreateOrderComponent extends BaseDestroyableComponent {
 
   createOrder() {
     if (this.orderForm.valid) {
-      this.orderForm.controls['items'].value
-        .map((v: IProduct) => [...Array(v.price / v.itemPrice)].map(x => x = { itemID: v.id, price: v.itemPrice }))
+      const items = this.orderForm.controls['items'].value
+        .map((v: IProduct) => [...Array(v.price / v.itemPrice)].map(x => {
+          return { itemID: v.id, price: v.itemPrice }
+        }
+        ))
         .flat(1)
 
+      const val = this.orderForm.value;
+      const body: IOrder = {
+        addressFrom: val.addressFrom,
+        addressTo: val.addressTo,
+        customerID: val.customerID,
+        managerID: val.managerID,
+        workerID: val.workerID,
+        description: val.description,
+        status: val.status,
+        id: val.id,
+        items: items,
+      }
       this.purchasedItems = this.orderForm.controls['items'].value.map((v: IProduct) => [...Array(v.price / v.itemPrice)]
         .map(x => x = {
           itemID: v.id,
@@ -84,7 +93,7 @@ export class ManagerCreateOrderComponent extends BaseDestroyableComponent {
           count: v.count
         }));
 
-      this.orderService.createOrder(this.orderForm.value)
+      this.orderService.createOrder(body)
         .pipe(takeUntil(this.subscriptions))
         .subscribe((v: IOrder) => {
           if (v) {
